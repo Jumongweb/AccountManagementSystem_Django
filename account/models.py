@@ -11,24 +11,24 @@ class Account(models.Model):
     pin = models.CharField(max_length=4)
     balance = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
     ACCOUNT_TYPE = [
-        ('SAVING', 'SAV'),
-        ('CURRENT', 'CUR'),
-        ('DOMICILIARY', 'DOM'),
+        ('SAV', 'SAVING'),
+        ('CUR', 'CURRENT'),
+        ('DOM', 'DOMICILIARY'),
     ]
-    account_type = models.CharField(max_length=1, choices=ACCOUNT_TYPE, default='SAV')
+    account_type = models.CharField(max_length=3, choices=ACCOUNT_TYPE, default='SAV')
 
 
 class Transaction(models.Model):
     TRANSACTION_TYPE = [
-        ('DEBIT', 'DEB'),
-        ('CREDIT', 'CRE'),
-        ('TRANSFER', 'TRA'),
+        ('DEB', 'DEBIT'),
+        ('CRE', 'CREDIT'),
+        ('TRA', 'TRANSFER'),
     ]
 
     TRANSACTION_STATUS = [
-        ('SUCCESSFUL', 'S'),
-        ('FAILED', 'F'),
-        ('PENDING', 'P'),
+        ('S', 'SUCCESSFUL'),
+        ('F', 'FAILED'),
+        ('P', 'PENDING'),
     ]
 
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
