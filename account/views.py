@@ -44,13 +44,14 @@ def account_detail(request, pk):
 def deposit(request):
     account_number = request.data['account_number']
     amount = Decimal(request.data['amount'])
+    description = request.data['description']
     account = get_object_or_404(Account, pk=account_number)
     account.balance += amount
     account.save()
     Transaction.objects.create(
         account=account,
         amount=amount,
-
+        description=description
     )
     return Response({"message": "Deposit successful"}, status=status.HTTP_200_OK)
 
@@ -60,6 +61,7 @@ def withdraw(request):
     account_number = request.data['account_number']
     amount = request.data['amount']
     pin = request.data['pin']
+    description = request.data['description']
     account = get_object_or_404(Account, pk=account_number)
     if amount > account.balance:
         return Response({"success": "false", "message": "Insufficient fund"}, status=status.HTTP_400_BAD_REQUEST)
@@ -70,4 +72,10 @@ def withdraw(request):
 
     account.balance -= amount
     account.save()
+    Transaction.objects.create(
+        account=account,
+        transaction_type="DEB",
+        amount=amount,
+        description=description
+    )
     return Response({"success": "true", "message": "Withdraw successful"}, status=status.HTTP_200_OK)
