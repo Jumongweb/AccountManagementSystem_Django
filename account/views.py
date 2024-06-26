@@ -22,22 +22,20 @@ def list_account(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-@api_view()
-def account_info(request, pk):
+@api_view(["GET", "PUT", "PATCH", "DELETE"])
+def account_detail(request, pk):
     account = get_object_or_404(Account, pk=pk)
-    serializer = AccountSerializer(account)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # try:
-    #     account = Account.objects.get(pk=pk)
-    #     serializer = AccountSerializer(account)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
-    # except Account.DoesNotExist:
-    #     return Response({"message": "Account does not exist"}, status=status.HTTP_404_NOT_FOUND)
-
+    if request.method == 'GET':
+        serializer = AccountSerializer(account)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == 'PUT':
+        serializer = AccountCreateSerializer(account, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == 'DELETE':
+        account.delete()
+        return Response({"message": "Delete successful"}, status=status.HTTP_204_NO_CONTENT)
 
 @api_view()
-def delete_account(request, pk):
-    account = get_object_or_404(Account, pk=pk)
-    account.delete()
-    return Response(status=status.HTTP_200_OK)
+def deposit(request):
