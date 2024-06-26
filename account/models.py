@@ -1,6 +1,6 @@
 from django.db import models
 
-from . import validate_pin
+from .validator import validate_pin
 from .utility import generate_account_number
 
 
