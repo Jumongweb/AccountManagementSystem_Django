@@ -18,6 +18,7 @@ class Account(models.Model):
         ('DOM', 'DOMICILIARY'),
     ]
     account_type = models.CharField(max_length=3, choices=ACCOUNT_TYPE, default='SAV')
+    # transactions = models.ManyToOneRel
 
     # def __str__(self):
     #     return f"{self.first_name} {self.last_name} {self.account_type} {self.balance}"
@@ -43,4 +44,5 @@ class Transaction(models.Model):
     description = models.TextField(blank=True, null=True)
     transaction_status = models.CharField(max_length=1, choices=TRANSACTION_STATUS, default='S')
 
-
+    # def __str__(self):
+    #     return f"self.transaction_type"
