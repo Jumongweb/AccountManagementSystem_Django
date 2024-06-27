@@ -1,17 +1,21 @@
 from rest_framework import serializers
-from account.models import Account
+from account.models import Account, Transaction
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = ['id', 'amount', 'transaction_type', 'transaction_status', 'transaction_time', 'description']
 
 
 class AccountSerializer(serializers.ModelSerializer):
+    transactions = TransactionSerializer(many=True)
+
     class Meta:
         model = Account
-        fields = ['account_number', 'first_name', 'last_name', 'balance', 'account_type']
+        fields = ['account_number', 'first_name', 'last_name', 'balance', 'account_type', 'transactions']
 
-    # account_number = serializers.CharField(max_length=10)
-    # first_name = serializers.CharField(max_length=255)
-    # last_name = serializers.CharField(max_length=255)
-    # balance = serializers.DecimalField(max_digits=10, decimal_places=2)
-    # account_type = serializers.CharField(max_length=10)
+    # transactions = serializers.StringRelatedField()
 
 
 class AccountCreateSerializer(serializers.ModelSerializer):
