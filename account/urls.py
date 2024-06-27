@@ -1,10 +1,15 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import SimpleRouter
+
 from . import views
 
+router = SimpleRouter()
+router.register('accounts', views.AccountViewSet)
 
 urlpatterns = [
-    path('accounts/', views.list_account),
-    path('accounts/<int:pk>/', views.account_detail),
+    # path('accounts/', views.ListAccount.as_view()),
+    # path('accounts/get/<int:pk>/', views.AccountDetail.as_view()),
+    path('', include(router.urls)),
     path('deposit/', views.deposit),
     path('withdraw/', views.withdraw),
 ]
